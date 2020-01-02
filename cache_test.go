@@ -12,7 +12,7 @@ import (
 func TestMain(m *testing.M) {
 	cfg := Config{
 		Enabled: true,
-		TTL:     "1500ms",
+		TTL:     "2s",
 		Logging: struct {
 			Enabled bool
 		}{Enabled: true},
@@ -83,6 +83,8 @@ func TestGetTTL(t *testing.T) {
 }
 
 func BenchmarkGetFromCache(b *testing.B) {
+	config.TTL = "15s"
+	ttl = nil
 	for n := 0; n < b.N; n++ {
 		GetFromCache(fmt.Sprintf("entry_%d", n), func() (bytes []byte, e error) {
 			return []byte(fmt.Sprintf("entry _ %d", n)), nil
